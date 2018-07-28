@@ -1,2 +1,17 @@
-<h1>Menus#new</h1>
-<p>Find me in app/views/menus/new.html.erb</p>
+<h3><%= flash[:alert] %></h3>
+
+<%= form_for @menu do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :menu_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Price %>
+    <%= form.number_field :price, id: :menu_price %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,2 +1,9 @@
-<h1>Menus#index</h1>
-<p>Find me in app/views/menus/index.html.erb</p>
+<%= link_to "メニューの追加", new_menu_path ,method: :get%>
+
+<% @menus.each do |menu|%>
+  <hr>
+  <h2>商品名：<%= menu.name %></h2>
+  <h2>値段：<%= menu.price %>円</h2>
+  <%= link_to "編集", edit_menu_path(menu.id), method: :get%>
+<% end %>
+<hr>
