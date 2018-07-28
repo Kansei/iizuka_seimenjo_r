@@ -1,4 +1,10 @@
-<%= link_to "メニューの追加", new_menu_path ,method: :get%>
+<div class = "header">
+  <p class = "logo">飯塚製麺所R</p>
+  <p class = "title">メニュー一覧<p>
+  <div class = "new">
+    <%= link_to "メニューの追加", new_menu_path ,method: :get%>
+  </div>
+</div>
 
 <% @menus.each do |menu|%>
   <hr>
