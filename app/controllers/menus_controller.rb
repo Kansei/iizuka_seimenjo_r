@@ -15,7 +15,7 @@ class MenusController < ApplicationController
     if @menu.save
       redirect_to action: :index
     else
-      flash[:alert] = "メニューの追加に失敗しました。"
+      flash.now[:danger] = "メニューの追加に失敗しました。"
       render action: :new
     end
   end
@@ -33,11 +33,11 @@ class MenusController < ApplicationController
     @menu = Menu.find(params[:id])
     @menu.name = params[:menu][:name]
     @menu.price = params[:menu][:price]
-    @menu.image = params[:menu][:image]
+    @menu.image = params[:menu][:image] unless params[:menu][:image].nil?
     if @menu.save
       redirect_to action: :index
     else
-      flash[:alert] = "メニューの編集に失敗しました。"
+      flash.now[:danger] = "メニューの編集に失敗しました。"
       render action: :edit
     end
   end
@@ -48,7 +48,7 @@ class MenusController < ApplicationController
     if @menu.destroy
       redirect_to action: :index
     else
-      flash[:alert] = "メニューの削除に失敗しました。"
+      flash.now[:danger] = "メニューの削除に失敗しました。"
       render action: :edit
     end
   end
