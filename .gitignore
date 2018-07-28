@@ -46,3 +46,6 @@ bower.json
 
 # Ignore node_modules
 node_modules/
+
+# active_strage
+storage/*

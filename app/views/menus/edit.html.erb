@@ -2,14 +2,22 @@
 
 <%= form_for @menu do |form| %>
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :name %><br>
     <%= form.text_field :name, id: :menu_name%>
   </div>
 
   <div class="field">
-    <%= form.label :Price %>
+    <%= form.label :Price %><br>
     <%= form.number_field :price, id: :menu_price%>
   </div>
+
+
+
+  <% if @menu.image.attached? %>
+    <%= image_tag @menu.image.variant(resize: "300x300") %><br>
+  <% end %>
+
+  <%= form.file_field :image %>
 
   <div class="actions">
     <%= form.submit %>

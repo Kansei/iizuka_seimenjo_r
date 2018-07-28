@@ -4,6 +4,10 @@
   <hr>
   <h2>商品名：<%= menu.name %></h2>
   <h2>値段：<%= menu.price %>円</h2>
+  <% if menu.image.attached? %>
+    <%= image_tag menu.image.variant(resize: "300x300") %><br>
+  <% end %>
+
   <%= link_to "編集", edit_menu_path(menu.id), method: :get%>
 <% end %>
 <hr>

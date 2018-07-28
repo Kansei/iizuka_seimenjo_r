@@ -9,7 +9,9 @@ class MenusController < ApplicationController
 
   def create
     #ストロングパラメーターを用いる
-    @menu = Menu.new(name: params[:menu][:name], price: params[:menu][:price])
+    @menu = Menu.new(name: params[:menu][:name],
+                     price: params[:menu][:price],
+                     image: params[:menu][:image])
     if @menu.save
       redirect_to action: :index
     else
@@ -31,6 +33,7 @@ class MenusController < ApplicationController
     @menu = Menu.find(params[:id])
     @menu.name = params[:menu][:name]
     @menu.price = params[:menu][:price]
+    @menu.image = params[:menu][:image]
     if @menu.save
       redirect_to action: :index
     else
@@ -41,6 +44,7 @@ class MenusController < ApplicationController
 
   def destroy
     @menu = Menu.find(params[:id])
+
     if @menu.destroy
       redirect_to action: :index
     else
