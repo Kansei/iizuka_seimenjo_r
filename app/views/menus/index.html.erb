@@ -1,0 +1,23 @@
+<% @menus.each do |menu|%>
+  <div class = "menu-list">
+    <% if menu.image.attached? %>
+      <div class = "menu-image">
+        <%= image_tag menu.image.variant(resize: "300x300") %><br>
+      </div>
+    <% end %>
+    <div class = "menu-profile">
+      <p>商品名：<%= menu.name %></p>
+      <p>値段：<%= menu.price %>円</p>
+      <%= link_to "編集", edit_menu_path(menu.id) ,class: "btn btn-outline-primary"%>
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<div class="button-backgroud">
+  <div class="add-button">
+    <%= link_to "メニューを追加", new_menu_path, method: :get, class: "btn btn-primary btn-lg btn-block"%>
+  </div>
+</div>
+
+<div class="fake-footer"></div>
