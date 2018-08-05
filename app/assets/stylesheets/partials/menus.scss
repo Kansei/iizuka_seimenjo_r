@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
+// index
 img {
   border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
   width:  180px;       /* ※縦横を同値に */
@@ -42,3 +44,13 @@ img {
 .fake-footer{
   height: 100px;
 }
+//
+
+// newm, edit
+.menu-form {
+  margin: 50px;
+  .btn{
+    margin-top: 20px;
+  }
+}
+
