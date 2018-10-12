@@ -4,6 +4,7 @@ class CreateOrderDetails < ActiveRecord::Migration[5.2]
       t.references :order, foreign_key: true
       t.references :menu, foreign_key: true
       t.string :status
+      t.integer :quantity
 
       t.timestamps
     end

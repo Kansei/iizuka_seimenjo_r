@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_28_055316) do
+ActiveRecord::Schema.define(version: 2018_07_28_041446) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,14 +33,6 @@ ActiveRecord::Schema.define(version: 2018_07_28_055316) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "customers", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "phone_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "menus", force: :cascade do |t|
     t.string "name"
     t.integer "price"
@@ -52,6 +44,7 @@ ActiveRecord::Schema.define(version: 2018_07_28_055316) do
     t.integer "order_id"
     t.integer "menu_id"
     t.string "status"
+    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_order_details_on_menu_id"
@@ -61,11 +54,9 @@ ActiveRecord::Schema.define(version: 2018_07_28_055316) do
   create_table "orders", force: :cascade do |t|
     t.integer "total_price"
     t.string "status"
-    t.time "time"
-    t.integer "customer_id"
+    t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
 end
