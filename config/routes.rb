@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       post 'confirm'
+      get 'recive'
     end
   end
 end
