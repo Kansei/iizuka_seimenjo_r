@@ -1,0 +1,25 @@
+<div class="order-form">
+<%= form_with url: orders_path, html: {class: "form-horizontal"}, local: true do |form| %>
+
+    <%	@orders.each do |order| %>
+      <p><%=	order[:name]  %></p>
+      <p><%=	order[:price]  %>円</p>
+      <p><%=	order[:quantity]  %>個</p>
+      <hr>
+
+      <%= form.hidden_field "order_details[][menu_id]",value: order[:menu_id] %>
+      <%= form.hidden_field "order_details[][quantity]",value: order[:quantity] %>
+
+    <% end %>
+
+    <p>合計金額：<%= @total_price %>円</p>
+    <%= form.hidden_field "total_price",value: @total_price %>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= form.submit "注文", class: "btn btn-primary" %>
+      </div>
+    </div>
+
+  <% end %>
+</div>
