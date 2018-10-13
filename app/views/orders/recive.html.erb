@@ -1,0 +1,5 @@
+<% flash.each do |message_type, message| %>
+  <div class="alert alert-<%= message_type %>"><%= message %></div>
+<% end %>
+
+<p>注文番号：<%=	@order_number  %></p>
