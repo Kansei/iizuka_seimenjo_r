@@ -18,8 +18,11 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <%= form.submit "注文", class: "btn btn-primary" %>
+        <%= link_to "戻る", new_order_path, method: :get, class: "btn btn-primary"%>
       </div>
     </div>
+
+
 
   <% end %>
 </div>

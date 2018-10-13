@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
 
   def index
+
   end
 
   def new
@@ -41,14 +42,12 @@ class OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      order = Order.new(total_price: params[:total_price], status: "doing", number: rand(1000))
-      order.save!
-
-      @order_number = order.number
+      @order = Order.new(total_price: params[:total_price], status: "doing", number: rand(1000))
+      @order.save!
 
       details = params[:order_details]
       details.each do |detail|
-        order.order_details.create!(menu_id: detail[:menu_id], status: false, quantity: detail[:quantity])
+        @order.order_details.create!(menu_id: detail[:menu_id], status: false, quantity: detail[:quantity])
       end
     end
 
@@ -66,6 +65,13 @@ class OrdersController < ApplicationController
   end
 
   def destroy
+    id = params[:id]
+
+    order = Order.find_by(id: id)
+    order.destroy
+
+    flash[:success] = "注文を取り消しました。"
+    redirect_to new_order_path
   end
 
 end
