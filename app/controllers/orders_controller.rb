@@ -1,7 +1,23 @@
 class OrdersController < ApplicationController
 
   def index
+    orderStruct = Struct.new(:id, :number, :status, :details)
+    orderDetailStruct = Struct.new(:name, :quantity)
 
+    orders = Order.where.not(status: 'done')
+
+    @orders = Array.new(orders.size)
+
+    orders.each_with_index do |order, i|
+      details = Array.new(order.order_details.size)
+      order.order_details.each_with_index do |detail, i|
+        details[i] = orderDetailStruct.new(detail.menu.name, detail.quantity)
+      end
+
+      @orders[i] = orderStruct.new(order.id, order.number, order.status, details)
+    end
+
+    @orders
   end
 
   def new
@@ -62,6 +78,19 @@ class OrdersController < ApplicationController
   end
 
   def update
+    status = %w(doing waiting done)
+
+    @order = Order.find(params[:id])
+
+    2.times do |i|
+      if status[i] == @order.status
+        @order.status = status[i+1]
+        @order.save!
+        break
+      end
+    end
+
+    redirect_to orders_path
   end
 
   def destroy

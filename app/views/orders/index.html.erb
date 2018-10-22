@@ -1,0 +1,30 @@
+<% @orders.each do |order| %>
+  <div class="order-form">
+  <p>注文番号: <%= order.number %></p>
+  <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#editModal">
+    注文状態: <%= order.status %>
+  </button>
+  <% order.details.size.times do |i| %>
+    <p><%= order.details[i].name	%>　✕　<%= order.details[i].quantity	%></p>
+  <% end %>
+  <hr>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="demoModalTitle">この注文の状態を変更しますか？</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <%= link_to "状態を変更する", order_path(order.id), method: :put, class: 'btn btn-success' %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<% end %>
