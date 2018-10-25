@@ -1,5 +1,5 @@
 class Menu < ApplicationRecord
-  has_many :order_details
+  has_one :order_detail
   has_many :orders, through: :order_details
 
   # acvive_strage
