@@ -1,23 +1,7 @@
 class OrdersController < ApplicationController
 
   def index
-    orderStruct = Struct.new(:id, :number, :status, :details)
-    orderDetailStruct = Struct.new(:name, :quantity)
-
-    orders = Order.where.not(status: 'done')
-
-    @orders = Array.new(orders.size)
-
-    orders.each_with_index do |order, i|
-      details = Array.new(order.order_details.size)
-      order.order_details.each_with_index do |detail, i|
-        details[i] = orderDetailStruct.new(detail.menu.name, detail.quantity)
-      end
-
-      @orders[i] = orderStruct.new(order.id, order.number, order.status, details)
-    end
-
-    @orders
+    @orders = Order.where.not(status: 'done').eager_load(order_details: [:menu])
   end
 
   def new
@@ -100,7 +84,12 @@ class OrdersController < ApplicationController
     order.destroy
 
     flash[:success] = "注文を取り消しました。"
-    redirect_to new_order_path
+    if request.fullpath == "/orders"
+      redirect_to new_order_path
+      return
+    else
+      redirect_to orders_path
+      return
+    end
   end
-
 end
