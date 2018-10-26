@@ -1,7 +1,8 @@
 require 'securerandom'
 
 class MenusController < ApplicationController
-  before_action
+  before_action :authenticate_user!
+
   def index
     #ページネーションの追加
     @menus = Menu.all
