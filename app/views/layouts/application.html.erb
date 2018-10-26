@@ -14,8 +14,11 @@
   <body>
 
   <%= render 'shared/header' %>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+
+  <% if !notice.nil? %>
+    <p><%= notice %></p>
+    <p><%= alert %></p>
+  <% end %>
 
     <%= yield %>
   </body>

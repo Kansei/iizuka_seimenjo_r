@@ -4,6 +4,8 @@
     <% order.order_details.each do |detail| %>
       <p><%= detail.menu.name %>　✕　<%= detail.quantity %></p>
     <% end %>
+
+    <% if user_signed_in? %>
     <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=<%="#editModal-#{order.id}" %>>
       注文状態: <%= order.status %>
     </button>
@@ -46,4 +48,8 @@
       </div>
     </div>
   </div>
+    <% else %>
+      <p>注文状態: <%= order.status %></p>
+    <% end %>
+    <hr>
 <% end %>
