@@ -4,15 +4,13 @@ class MenusController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    #ページネーションの追加
     @menus = Menu.all
   end
 
   def create
     #ストロングパラメーターを用いる
     @menu = Menu.new(name: params[:menu][:name],
-                     price: params[:menu][:price],
-                     image: params[:menu][:image])
+                     price: params[:menu][:price])
     if @menu.save
       redirect_to action: :index
     else
@@ -34,7 +32,7 @@ class MenusController < ApplicationController
     @menu = Menu.find(params[:id])
     @menu.name = params[:menu][:name]
     @menu.price = params[:menu][:price]
-    @menu.image = params[:menu][:image] unless params[:menu][:image].nil?
+
     if @menu.save
       redirect_to action: :index
     else
