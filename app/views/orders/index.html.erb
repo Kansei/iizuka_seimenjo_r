@@ -2,8 +2,11 @@
   <div class="order-form">
     <p>注文番号: <%= order.number %></p>
     <% order.order_details.each do |detail| %>
-      <p><%= detail.menu.name %>　✕　<%= detail.quantity %></p>
+      <% if detail.menu.visible %>
+        <p><%= detail.menu.name %>　✕　<%= detail.quantity %></p>
+      <% end %>
     <% end %>
+
 
     <% if user_signed_in? %>
     <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=<%="#editModal-#{order.id}" %>>

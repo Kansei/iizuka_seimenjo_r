@@ -10,7 +10,8 @@ class MenusController < ApplicationController
   def create
     #ストロングパラメーターを用いる
     @menu = Menu.new(name: params[:menu][:name],
-                     price: params[:menu][:price])
+                     price: params[:menu][:price],
+                     visible: params[:menu][:visible])
     if @menu.save
       redirect_to action: :index
     else
@@ -28,10 +29,10 @@ class MenusController < ApplicationController
   end
 
   def update
-    # 変更のあったパラメータだけ更新したい
     @menu = Menu.find(params[:id])
     @menu.name = params[:menu][:name]
     @menu.price = params[:menu][:price]
+    @menu.visible = params[:menu][:visible]
 
     if @menu.save
       redirect_to action: :index
