@@ -43,12 +43,12 @@ class OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      @order = Order.new(total_price: params[:total_price], status: "doing", number: rand(1000))
+      @order = Order.new(total_price: params[:total_price], status: 'doing', number: rand(1000))
       @order.save!
 
       details = params[:order_details]
       details.each do |detail|
-        @order.order_details.create!(menu_id: detail[:menu_id], status: false, quantity: detail[:quantity])
+        @order.order_details.create!(menu_id: detail[:menu_id], quantity: detail[:quantity])
       end
     end
 

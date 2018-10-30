@@ -1,10 +1,5 @@
 <% @menus.each do |menu|%>
   <div class = "menu-list">
-    <% if menu.image.attached? %>
-      <div class = "menu-image">
-        <%= image_tag menu.image.variant(resize: "300x300") %><br>
-      </div>
-    <% end %>
     <div class = "menu-profile">
       <p>商品名：<%= menu.name %></p>
       <p>値段：<%= menu.price %>円</p>

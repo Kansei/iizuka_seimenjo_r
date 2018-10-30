@@ -4,7 +4,6 @@ class MenusController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    #ページネーションの追加
     @menus = Menu.all
   end
 
@@ -12,7 +11,7 @@ class MenusController < ApplicationController
     #ストロングパラメーターを用いる
     @menu = Menu.new(name: params[:menu][:name],
                      price: params[:menu][:price],
-                     image: params[:menu][:image])
+                     visible: params[:menu][:visible])
     if @menu.save
       redirect_to action: :index
     else
@@ -30,11 +29,11 @@ class MenusController < ApplicationController
   end
 
   def update
-    # 変更のあったパラメータだけ更新したい
     @menu = Menu.find(params[:id])
     @menu.name = params[:menu][:name]
     @menu.price = params[:menu][:price]
-    @menu.image = params[:menu][:image] unless params[:menu][:image].nil?
+    @menu.visible = params[:menu][:visible]
+
     if @menu.save
       redirect_to action: :index
     else

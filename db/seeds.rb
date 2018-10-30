@@ -5,10 +5,19 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'dotenv'
+
+if Rails.env == 'production'
+  email = ENV["ADMIN_EMAIL"]
+  password = ENV["ADMIN_PASSWORD"]
+else
+  email = 'admin@example.com'
+  password = 'password'
+end
 
 User.find_or_create_by(id: 1) do |user|
-  user.email = 'admin@example.com'
-  user.password = 'password'
+  user.email = email
+  user.password = password
 end
 
 puts 'Created Admin User!'
