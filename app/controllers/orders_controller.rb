@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
 
     orders.each do |order|
       quantity = order[:quantity].to_i
-      next if quantity.blank? ||quantity < 1
+      next if quantity.blank? || quantity < 1
       order = {menu_id: order[:menu_id], name: nil, price: nil, quantity: quantity}
 
       @orders.append(order)
@@ -43,7 +43,9 @@ class OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      @order = Order.new(total_price: params[:total_price], status: 'doing', number: rand(1000))
+      number = Order.last.id%30 + 1
+
+      @order = Order.new(total_price: params[:total_price], status: 'doing', number: number)
       @order.save!
 
       details = params[:order_details]
@@ -60,18 +62,39 @@ class OrdersController < ApplicationController
   end
 
   def edit
+    @order = Order.find(params[:id])
+    @details = @order.order_details.eager_load(:menu)
   end
 
   def update
-    status = %w(doing waiting done)
+    if params[:status]
+      status = %w(doing waiting done)
 
-    @order = Order.find(params[:id])
+      @order = Order.find(params[:id])
 
-    2.times do |i|
-      if status[i] == @order.status
-        @order.status = status[i+1]
-        @order.save!
-        break
+      2.times do |i|
+        if status[i] == @order.status
+          @order.status = status[i + 1]
+          @order.save!
+          break
+        end
+      end
+    else
+      order = Order.eager_load(:order_details).find(params[:id])
+      details = order.order_details
+
+      details.each_with_index do |detail, i|
+        quantity = params[:order][:details][i][:quantity].to_i
+        if quantity == 0
+          detail.destroy
+        elsif quantity < 0
+          flash[:danger] = "ちゃんと数を入力して。次はないよ。"
+          redirect_to edit_order_path
+          return
+        else
+          detail.quantity = quantity
+          detail.save!
+        end
       end
     end
 

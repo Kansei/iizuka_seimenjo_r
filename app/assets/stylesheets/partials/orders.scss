@@ -1,0 +1,56 @@
+// Place all the styles related to the orders controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.title{
+  margin: 10px 0;
+  font-size: 28px;
+  text-align: center;
+}
+
+.contents{
+  background-color: white;
+  padding: 15px;
+  margin-left: 30px;
+  width: calc(100% - 60px);
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+  border-radius: 10px;
+  img{
+    width: 65px;
+    height: 65px;
+  }
+
+.order-detail{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.status {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 0;
+  margin-left: 80px;
+}
+
+.order_num {
+  font-size: 16px;
+  margin-bottom: 10px;
+  .number{
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.detail {
+  margin-bottom: 5px;
+  margin-left: 15px;
+  .multiple {
+    font-size: 5px;
+  }
+}
+
+  .buttons {
+    margin-top: 10px;
+  }
+}
+
