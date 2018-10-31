@@ -22,19 +22,20 @@
     <div class="form-group">
       <%= form.label "このメニューを注文一覧に表示しますか？", class: "col-sm-6 control-label" %>
       <div class="col-sm-10">
-        <%= form.select :visible, [['はい', true],['いいえ', false]], id: :menu_visible, class: "form-control" %>
+        <%= form.select :visible, [['はい', true],['いいえ', false]],{}, id: :menu_visible, class: "form-control custom-select" %>
       </div>
     </div>
 
     <div class="col-sm-offset-2 col-sm-10">
-      <%= form.submit "メニューを編集", class: "btn btn-primary" %>
-      <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">
+      <%= form.submit "メニューを更新", class: "btn btn-primary" %>
+
+      <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteMenuModal">
       削除
       </button>
     </div>
 
     <!-- モーダルダイアログ -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal fade" id="deleteMenuModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">

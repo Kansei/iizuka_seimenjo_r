@@ -1,22 +1,36 @@
-<% @orders.each do |order| %>
-  <div class="order-form">
-    <p>注文番号: <%= order.number %></p>
-    <% order.order_details.each do |detail| %>
-      <% if detail.menu.visible %>
-        <p><%= detail.menu.name %>　✕　<%= detail.quantity %></p>
-      <% end %>
-    <% end %>
+<div class="all">
+<h1 class="title">注文状況</h1>
+
+<div class="contents">
+  <% @orders.each do |order| %>
+    <div class="order-form">
+      <div class="order-detail">
+        <p class="order_num">注文番号: <span class="number"><%= order.number %></span></p>
+        <% order.order_details.each do |detail| %>
+          <% if detail.menu.visible %>
+            <p class="detail"><%= detail.menu.name %>　<span class="multiple">✕</span>　<%= detail.quantity %></p>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="status">
+          <%= image_tag("#{order.status}.png") %>
+      </div>
+
+      <% if user_signed_in? %>
+        <div class="buttons">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=<%= "#editModal-#{order.id}" %>>
+          状態変更
+        </button>
+
+        <%= link_to "修正", edit_order_path(order.id), class: "btn btn-outline-success" %>
+        </div>
+        <% end %>
+      <hr>
+    </div>
 
 
-    <% if user_signed_in? %>
-    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=<%="#editModal-#{order.id}" %>>
-      注文状態: <%= order.status %>
-    </button>
-    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=<%="#deleteModal-#{order.id}" %>>
-      取り消し
-    </button>
-
-    <div class="modal fade" id=<%="editModal-#{order.id}" %> tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal fade" id=<%= "editModal-#{order.id}" %> tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -27,31 +41,11 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-            <%= link_to "状態を変更する", order_path(order.id), method: :put, class: 'btn btn-success' %>
+            <%= link_to "状態を変更する", order_path(order.id, status: true), method: :put, class: "btn btn-primary" %>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="modal fade" id=<%="deleteModal-#{order.id}" %> tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="demoModalTitle">この注文を取り消しますか？</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-          <%= link_to "取り消す", order_path(order.id), method: :delete, class: "btn btn-danger" %>
-        </div>
-      </div>
-    </div>
-  </div>
-    <% else %>
-      <p>注文状態: <%= order.status %></p>
-    <% end %>
-    <hr>
-<% end %>
+  <% end %>
+</div>
+</div>
