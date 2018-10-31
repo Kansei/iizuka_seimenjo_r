@@ -43,7 +43,9 @@ class OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      number = Order.last.id%30 + 1
+      last = Order.last
+      id = last.nil? ?  0 : last.id
+      number = id % 30 + 1
 
       @order = Order.new(total_price: params[:total_price], status: 'doing', number: number)
       @order.save!
