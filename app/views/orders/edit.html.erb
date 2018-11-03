@@ -5,23 +5,42 @@
 <div class="order-form">
   <%= form_with model: @order, html: {class: "form-horizontal"}, local: true do |form| %>
 
-    <p>注文番号：<%= @order.number %></p>
+    <p class="order-number-on-edit">整理券番号：<%= @order.number %></p>
     <% @details.each do |detail| %>
 
       <%= form.hidden_field "details[][detail_id]", value: detail.id %>
 
       <div class="form-group">
-        <%= form.label detail.menu.name, class: "col-sm-2 control-label" %>
-        <div class="col-sm-10">
-          <%= form.number_field "details[][quantity]",value: detail.quantity, class: "form-control" %>
+        <%= form.label detail.menu.name, class: "col-sm-6 control-label menu-name" %>
+        <div class="col-sm-12">
+          <div class="form-row">
+          <%= form.number_field "details[][quantity]",value: detail.quantity, class: "#{detail.id}-quantity form-control col-sm-6" %>
+            <div class="<%=detail.id%>-decrease quantity-btn btn btn-secondary col-sm-1">ー</div>
+            <div class="<%=detail.id%>-increase quantity-btn btn btn-secondary col-sm-1">＋</div>
+          </div>
         </div>
       </div>
+      <script type="text/javascript" charset="utf - 8">
+          jQuery(document).ready(function () {
+              $(".<%=detail.id%>-decrease").click(function () {
+                  var value = Number($(".<%=detail.id%>-quantity").val());
+                  if(value > 0) {
+                      value -= 1;
+                      $(".<%=detail.id%>-quantity").val(value);
+                  }
+              });
+              $(".<%=detail.id%>-increase").click(function () {
+                  var value = Number($(".<%=detail.id%>-quantity").val());
+                  value += 1;
+                  $(".<%=detail.id%>-quantity").val(value);
+              });
+          });
+      </script>
     <% end %>
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <%= form.submit "更新", class: "btn btn-primary" %>
-
+        <%= form.submit "更新", class: "btn btn-primary col-sm-4" %>
         <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteOrderModal">
           取り消し
         </button>

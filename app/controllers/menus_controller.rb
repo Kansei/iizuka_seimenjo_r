@@ -35,6 +35,7 @@ class MenusController < ApplicationController
     @menu.visible = params[:menu][:visible]
 
     if @menu.save
+      flash[:success] = "メニューを編集しました。"
       redirect_to action: :index
     else
       flash.now[:danger] = "メニューの編集に失敗しました。"

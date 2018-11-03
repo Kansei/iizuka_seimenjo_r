@@ -2,11 +2,10 @@
   <div class="alert alert-<%= message_type %>"><%= message %></div>
 <% end %>
 
-<p>注文番号：<%= @order.number %></p>
+<p class="order-number">整理券番号：<%= @order.number %></p>
 
 <div class="order-form">
-
-  <div class="col-sm-offset-2 col-sm-10">
+  <div class="recive-buttons">
       <%= link_to "注文画面に戻る", new_order_path, method: :get, class: "btn btn-primary"%>
     <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal">
       取り消し
