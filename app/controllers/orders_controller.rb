@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
     end
 
     if order_ids.empty?
-      flash[:danger] = "ちゃんと数を入力して。次はないよ。"
+      flash[:danger] = "数字を入力してください。"
       redirect_to new_order_path
       return
     end
@@ -95,7 +95,7 @@ class OrdersController < ApplicationController
           if quantity == 0
             detail.destroy
           elsif quantity < 0
-            flash[:danger] = "ちゃんと数を入力して。次はないよ。"
+            flash[:danger] = "数字を入力してください。"
             redirect_to edit_order_path
             return
           else

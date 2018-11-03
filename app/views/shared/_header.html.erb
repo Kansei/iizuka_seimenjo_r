@@ -1,36 +1,36 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark">
   <div id="head-logo">
-    <%= link_to "飯塚製麺所R", '/', class:"navbar-brand" %>
+    <%= link_to "飯塚製麺所R", '/', class: "navbar-brand" %>
 
-  <% if user_signed_in? %>
-  </div><!-- head-logo -->
-  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <% if user_signed_in? %>
+      </div><!-- head-logo -->
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="collapse navbar-collapse" id="Navber">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/orders/new">注文受付</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/orders">注文一覧</a>
-      </li>
-      <li class="nav-item">
-        <%= link_to "お渡し済み一覧", orders_path(done: true), class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/menus">メニュー</a>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="modal" data-target="#logoutModal", href="#">
-          ログアウト
-        </a>
-      </li>
-    </ul>
-  </div>
+      <div class="collapse navbar-collapse" id="Navber">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/orders/new">注文受付</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/orders">注文一覧</a>
+          </li>
+          <li class="nav-item">
+            <%= link_to "お渡し済み一覧", orders_path(done: true), class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/menus">メニュー</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" data-target="#logoutModal" , href="#">
+              ログアウト
+            </a>
+          </li>
+        </ul>
+      </div>
 
       <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -43,10 +43,10 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-danger"%>
+              <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
             </div>
           </div>
         </div>
       </div>
     <% end %>
-</nav>
+    </nav>
