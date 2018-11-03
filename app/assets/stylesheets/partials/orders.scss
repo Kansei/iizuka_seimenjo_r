@@ -2,52 +2,59 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.title{
+.title {
   margin: 10px 0;
   font-size: 28px;
   text-align: center;
 }
 
-.contents{
+.contents {
   background-color: white;
-  padding: 15px;
+  padding: 10px;
   margin-left: 30px;
   width: calc(100% - 60px);
-  box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
-  img{
-    width: 65px;
-    height: 65px;
+
+  .nothing {
+    text-align: center;
+    font-size: 14px;
+    color: dimgray;
   }
 
-.order-detail{
-  display: inline-block;
-  vertical-align: middle;
-}
+  .order-detail {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 70px);
+  }
 
-.status {
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 0;
-  margin-left: 80px;
-}
+  .status {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    img {
+      width: 65px;
+      height: 65px;
+    }
+  }
 
-.order_num {
-  font-size: 16px;
-  margin-bottom: 10px;
-  .number{
-    font-size: 18px;
+  .order_num {
     font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    .number {
+      font-size: 18px;
+    }
   }
-}
 
-.detail {
-  margin-bottom: 5px;
-  margin-left: 15px;
-  .multiple {
-    font-size: 5px;
+  .detail {
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    .multiple {
+      font-size: 10px;
+    }
   }
-}
 
   .buttons {
     margin-top: 10px;

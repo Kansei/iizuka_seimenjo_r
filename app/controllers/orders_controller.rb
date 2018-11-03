@@ -2,7 +2,12 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
   def index
-    @orders = Order.where.not(status: 'done').eager_load(order_details: [:menu])
+    if params[:done]
+      @orders = Order.where(status: 'done').order(updated_at: 'desc')
+      .eager_load(order_details: [:menu])
+    else
+      @orders = Order.where.not(status: 'done').eager_load(order_details: [:menu])
+    end
   end
 
   def new
@@ -44,7 +49,7 @@ class OrdersController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       last = Order.last
-      id = last.nil? ?  0 : last.id
+      id = last.nil? ? 0 : last.id
       number = id % 30 + 1
 
       @order = Order.new(total_price: params[:total_price], status: 'doing', number: number)
@@ -70,36 +75,55 @@ class OrdersController < ApplicationController
 
   def update
     if params[:status]
-      status = %w(doing waiting done)
-
       @order = Order.find(params[:id])
 
-      2.times do |i|
-        if status[i] == @order.status
-          @order.status = status[i + 1]
-          @order.save!
-          break
-        end
-      end
-    else
-      order = Order.eager_load(:order_details).find(params[:id])
-      details = order.order_details
+      status = %w(doing waiting done)
+      index = status.index(@order.status)
+      next_index = (index+1) % 3
 
-      details.each_with_index do |detail, i|
-        quantity = params[:order][:details][i][:quantity].to_i
-        if quantity == 0
-          detail.destroy
-        elsif quantity < 0
-          flash[:danger] = "ちゃんと数を入力して。次はないよ。"
-          redirect_to edit_order_path
-          return
-        else
-          detail.quantity = quantity
-          detail.save!
+      @order.status = status[next_index]
+      @order.save!
+    else
+      @order = Order.eager_load(:order_details).find(params[:id])
+      @details = @order.order_details
+
+      total_price = 0
+
+      ActiveRecord::Base.transaction do
+        @details.each_with_index do |detail, i|
+          quantity = params[:order][:details][i][:quantity].to_i
+          if quantity == 0
+            detail.destroy
+          elsif quantity < 0
+            flash[:danger] = "ちゃんと数を入力して。次はないよ。"
+            redirect_to edit_order_path
+            return
+          else
+            detail.quantity = quantity
+            detail.save!
+
+            total_price += detail.menu.price * quantity
+          end
         end
+        price_differential = @order.total_price - total_price
+        @order.total_price = total_price
+        @order.save!
+
+        if price_differential > 0
+          message = "差額の#{price_differential}円、ご返金してください。"
+        elsif price_differential < 0
+          message = "差額の#{-price_differential}円、頂いてください。"
+        else
+          message = "差額は発生しません。"
+        end
+        flash[:success] = "注文を修正しました。#{message}"
       end
     end
 
+    redirect_to orders_path
+
+  rescue ActiveRecord::RecordInvalid
+    flash[:danger] = "注文の修正に失敗しました"
     redirect_to orders_path
   end
 

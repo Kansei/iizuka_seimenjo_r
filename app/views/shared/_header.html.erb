@@ -17,6 +17,9 @@
         <a class="nav-link" href="/orders">注文一覧</a>
       </li>
       <li class="nav-item">
+        <%= link_to "お渡し済み一覧", orders_path(done: true), class: "nav-link" %>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="/menus">メニュー</a>
       </li>
     </ul>
