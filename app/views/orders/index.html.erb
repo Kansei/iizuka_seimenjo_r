@@ -1,14 +1,24 @@
+<% flash.each do |message_type, message| %>
+  <div class="alert alert-<%= message_type %>"><%= message %></div>
+<% end %>
+
 <div class="all">
 <h1 class="title">注文状況</h1>
 
 <div class="contents">
+  <% if @orders.empty? %>
+    <p class="nothing">
+      現在、承っているご注文はありません。
+    </p>
+  <% end %>
+
   <% @orders.each do |order| %>
     <div class="order-form">
       <div class="order-detail">
-        <p class="order_num">注文番号: <span class="number"><%= order.number %></span></p>
+        <p class="order_num">整理券番号: <span class="number"><%= order.number %></span></p>
         <% order.order_details.each do |detail| %>
           <% if detail.menu.visible %>
-            <p class="detail"><%= detail.menu.name %>　<span class="multiple">✕</span>　<%= detail.quantity %></p>
+            <p class="detail"><%= detail.menu.name %> x <%= detail.quantity %></p>
           <% end %>
         <% end %>
       </div>
