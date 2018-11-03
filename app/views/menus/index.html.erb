@@ -1,3 +1,7 @@
+<% flash.each do |message_type, message| %>
+  <div class="alert alert-<%= message_type %>"><%= message %></div>
+<% end %>
+
 <% @menus.each do |menu|%>
   <div class = "menu-list">
     <div class = "menu-profile">

@@ -4,22 +4,11 @@
 
 
 // index
-img {
-  border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
-  width:  180px;       /* ※縦横を同値に */
-  height: 180px;       /* ※縦横を同値に */
-}
-
 .menu-list{
-  display: flex;
   margin: 20px 30px;
 
   .menu-profile{
     margin: 30px;
-  }
-  .menu-image{
-    display: table-cell;
-    vertical-align: middle;
   }
   p{
     font-size: 20px;
@@ -43,9 +32,6 @@ img {
 
 .menu-form {
   margin: 50px;
-  .btn{
-    margin-top: 20px;
-  }
 }
 
 .button-backgroud {
