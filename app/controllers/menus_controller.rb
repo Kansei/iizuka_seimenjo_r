@@ -31,7 +31,6 @@ class MenusController < ApplicationController
   def update
     @menu = Menu.find(params[:id])
     @menu.name = params[:menu][:name]
-    @menu.price = params[:menu][:price]
     @menu.visible = params[:menu][:visible]
 
     if @menu.save

@@ -110,9 +110,9 @@ class OrdersController < ApplicationController
         @order.save!
 
         if price_differential > 0
-          message = "差額の#{price_differential}円、ご返金してください。"
+          message = "差額の#{price_differential}円をご返金してください。"
         elsif price_differential < 0
-          message = "差額の#{-price_differential}円、頂いてください。"
+          message = "差額の#{-price_differential}円を頂いてください。"
         else
           message = "差額は発生しません。"
         end
