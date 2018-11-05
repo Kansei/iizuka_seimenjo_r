@@ -1,0 +1,27 @@
+
+<div class="order-details index">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">商品名</th>
+      <th scope="col">価格</th>
+      <th scope="col">売上数</th>
+      <th scope="col">売上金額</th>
+    </tr>
+    </thead>
+  <% @data[:details].each do |detail| %>
+    <tbody>
+    <tr>
+      <td><%= detail[:name] %></td>
+      <td><%= detail[:price] %></td>
+      <td><%= detail[:total_quantity] %></td>
+      <td><%= detail[:total_price] %></td>
+    </tr>
+  <% end %>
+    <tr>
+      <th class="table-active" scope="row" colspan="3">合計</th>
+      <td><%= @data[:total_price] %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
