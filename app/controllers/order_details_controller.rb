@@ -2,38 +2,36 @@ class OrderDetailsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @details = OrderDetail.all.eager_load(:menu)
-    menu_ids = Menu.all.select(:id).pluck(:id)
+    @menus = Menu.eager_load(:order_details)
+
+    sales_data = []
     total_price = 0
 
-    details_data = []
+     @menus.each do |menu|
+       total_quantity = 0
 
-    menu_ids.each do |menu_id|
-      details = @details.where(menu_id: menu_id).select(:quantity)
+       menu.order_details.each do |detail|
+         total_quantity += detail.quantity
+       end
 
-      detail_total_quantity = 0
-      price = details.first.menu.price
-      name = details.first.menu.name
+       sub_total_price = total_quantity * menu.price
 
-      details.each do |detail|
-        detail_total_quantity += detail.quantity
-      end
-      detail_total_price = price * detail_total_quantity
-      detail_data = {
-          name: name,
-          price: price,
-          total_quantity: detail_total_quantity,
-          total_price: detail_total_price
-      }
-      details_data.append(detail_data)
+       sale_data = {
+             name: menu.name,
+             price: menu.price,
+             total_quantity: total_quantity,
+             total_price: sub_total_price
+       }
+       sales_data.append(sale_data)
 
-      total_price += detail_total_price
-    end
+       total_price += sub_total_price
+     end
 
     @data = {
         total_price: total_price,
-        details: details_data
+        details: sales_data
     }
+
     render :index
   end
 end
