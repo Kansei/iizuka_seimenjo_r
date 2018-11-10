@@ -11,7 +11,9 @@ class MenusController < ApplicationController
     #ストロングパラメーターを用いる
     @menu = Menu.new(name: params[:menu][:name],
                      price: params[:menu][:price],
-                     visible: params[:menu][:visible])
+                     visible: params[:menu][:visible],
+                     sale_out: false
+                     )
     if @menu.save
       redirect_to action: :index
     else
