@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2018_10_25_201808) do
     t.string "name"
     t.integer "price"
     t.boolean "visible"
+    t.boolean "sale_out"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
