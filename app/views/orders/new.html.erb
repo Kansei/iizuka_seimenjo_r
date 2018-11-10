@@ -2,39 +2,48 @@
   <div class="alert alert-<%= message_type %>"><%= message %></div>
 <% end %>
 
+<% if @menus.empty? %>
+  <p>メニューの登録を行ってください。</p>
+<% else%>
+
 <div class="order-form">
   <%= form_with url: confirm_orders_path, html: {class: "form-horizontal"}, local: true do |form| %>
     <% @menus.each do |menu| %>
-      <p class="menu-info"><%= menu.name %>： <%= menu.price %>円</p>
-      <%= form.hidden_field "order[][menu_id]",value: menu.id %>
+      <% if menu.sale_out %>
+        <p class="menu-info"><%= menu.name %>(売り切れ)</p>
+      <% else %>
+        <p class="menu-info"><%= menu.name %>： <%= menu.price %>円</p>
+        <%= form.hidden_field "order[][menu_id]", value: menu.id %>
 
-      <div class="form-group">
-        <%= form.label "個数", class: "col-sm-2 control-label" %>
-        <div class="col-sm-10">
-          <div class="form-row">
-          <%= form.number_field "order[][quantity]", id: :menu_price, value: 0, class: "#{menu.id}-quantity form-control col-sm-6" %>
-            <div class="<%=menu.id%>-decrease quantity-btn btn btn-secondary col-sm-1">ー</div>
-            <div class="<%=menu.id%>-increase quantity-btn btn btn-secondary col-sm-1">＋</div>
+        <div class="form-group">
+          <%= form.label "個数", class: "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <div class="form-row">
+              <%= form.number_field "order[][quantity]", id: :menu_price, value: 0, class: "#{menu.id}-quantity form-control col-sm-6" %>
+              <div class="<%= menu.id %>-decrease quantity-btn btn btn-secondary col-sm-1">ー</div>
+              <div class="<%= menu.id %>-increase quantity-btn btn btn-secondary col-sm-1">＋</div>
+            </div>
           </div>
         </div>
-      </div>
+
+        <script type="text/javascript" charset="utf - 8">
+            jQuery(document).ready(function () {
+                $(".<%=menu.id%>-decrease").click(function () {
+                    var value = Number($(".<%=menu.id%>-quantity").val());
+                    if (value > 0) {
+                        value -= 1;
+                        $(".<%=menu.id%>-quantity").val(value);
+                    }
+                });
+                $(".<%=menu.id%>-increase").click(function () {
+                    var value = Number($(".<%=menu.id%>-quantity").val());
+                    value += 1;
+                    $(".<%=menu.id%>-quantity").val(value);
+                });
+            });
+        </script>
+      <% end %>
       <hr>
-      <script type="text/javascript" charset="utf - 8">
-          jQuery(document).ready(function () {
-              $(".<%=menu.id%>-decrease").click(function () {
-                  var value = Number($(".<%=menu.id%>-quantity").val());
-                  if(value > 0) {
-                      value -= 1;
-                      $(".<%=menu.id%>-quantity").val(value);
-                  }
-              });
-              $(".<%=menu.id%>-increase").click(function () {
-                  var value = Number($(".<%=menu.id%>-quantity").val());
-                  value += 1;
-                  $(".<%=menu.id%>-quantity").val(value);
-              });
-          });
-      </script>
     <% end %>
 
     <div class="form-group">
@@ -44,3 +53,4 @@
     </div>
   <% end %>
 </div>
+<% end %>

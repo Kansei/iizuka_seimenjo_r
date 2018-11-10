@@ -5,12 +5,39 @@
 <% @menus.each do |menu|%>
   <div class = "menu-list">
     <div class = "menu-profile">
-      <p>商品名：<%= menu.name %></p>
+      <p>商品名：<%= menu.name %>
+      <% if menu.sale_out %>
+          (売り切れ)
+        <% end %>
+      </p>
       <p>値段：<%= menu.price %>円</p>
-      <%= link_to "編集", edit_menu_path(menu.id) ,class: "btn btn-outline-primary"%>
+      <%= link_to "編集", edit_menu_path(menu.id) ,class: "btn btn-primary"%>
+      <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=<%= "#saleoutModal-#{menu.id}" %>>
+        売り切れ
+      </button>
     </div>
   </div>
   <hr>
+
+  <div class="modal fade" id=<%= "saleoutModal-#{menu.id}" %> tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="demoModalTitle">
+            <%= menu.name %>の売り切れ状態を変更しますか？
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+          <%= link_to "変更", menu_path(menu.id, sale_out: true), method: :put, class: "btn btn-danger" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <% end %>
 
 <div class="button-backgroud">

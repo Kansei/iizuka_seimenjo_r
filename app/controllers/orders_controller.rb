@@ -61,11 +61,12 @@ class OrdersController < ApplicationController
       end
     end
 
-    render :recive and return
+    flash.now[:success] = "注文を受け付けました。"
+    render :recive
 
   rescue ActiveRecord::RecordInvalid
-    flash.now[:danger] = "注文の受付に失敗しました。"
-    render :recive
+    flash[:danger] = "注文の受付に失敗しました。"
+    redirect_to new_order_path
   end
 
   def edit
