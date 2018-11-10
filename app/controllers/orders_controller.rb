@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   def index
     if params[:done]
       @orders = Order.where(status: 'done').order(updated_at: 'desc')
-      .eager_load(order_details: [:menu])
+                    .eager_load(order_details: [:menu])
     else
       @orders = Order.where.not(status: 'done').eager_load(order_details: [:menu])
     end
@@ -72,6 +72,8 @@ class OrdersController < ApplicationController
   def edit
     @order = Order.find(params[:id])
     @details = @order.order_details.eager_load(:menu)
+    menu_ids = @details.map {|detail| detail.menu.id}
+    @menus = Menu.where.not(id: menu_ids)
   end
 
   def update
@@ -80,7 +82,7 @@ class OrdersController < ApplicationController
 
       status = %w(doing waiting done)
       index = status.index(@order.status)
-      next_index = (index+1) % 3
+      next_index = (index + 1) % 3
 
       @order.status = status[next_index]
       @order.save!
@@ -91,8 +93,11 @@ class OrdersController < ApplicationController
       total_price = 0
 
       ActiveRecord::Base.transaction do
+        # 数の修正
         @details.each_with_index do |detail, i|
+          i = i.to_s
           quantity = params[:order][:details][i][:quantity].to_i
+          price = params[:order][:details][i][:price].to_i
           if quantity == 0
             detail.destroy
           elsif quantity < 0
@@ -103,9 +108,31 @@ class OrdersController < ApplicationController
             detail.quantity = quantity
             detail.save!
 
-            total_price += detail.menu.price * quantity
+            total_price += price * quantity
           end
         end
+
+        # 追加注文
+        details = params[:order][:details][:new]
+        unless details.nil?
+          i = 0
+          while !details[i.to_s].nil?
+            detail = details[i.to_s]
+            id = detail[:menu_id].to_i
+            price = detail[:price].to_i
+            quantity = detail[:quantity].to_i
+
+            if quantity <= 0
+              i += 1
+              next
+            end
+
+            @order.order_details.create!(menu_id: id, quantity: quantity)
+            total_price += price * quantity
+            i += 1
+          end
+        end
+
         price_differential = @order.total_price - total_price
         @order.total_price = total_price
         @order.save!

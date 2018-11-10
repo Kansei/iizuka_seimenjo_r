@@ -3,20 +3,19 @@
 <% end %>
 
 <div class="order-form">
-  <%= form_with model: @order, html: {class: "form-horizontal"}, local: true do |form| %>
+  <%= form_with model: @order, class: "form-horizontal", local: true do |form| %>
 
     <p class="order-number-on-edit">整理券番号：<%= @order.number %></p>
-    <% @details.each do |detail| %>
-
-      <%= form.hidden_field "details[][detail_id]", value: detail.id %>
-
+    <% @details.each_with_index do |detail, i| %>
+      <%= form.hidden_field "details[#{i}][detail_id]", value: detail.id %>
+      <%= form.hidden_field "details[#{i}][price]", value: detail.menu.price %>
       <div class="form-group">
         <%= form.label detail.menu.name, class: "col-sm-6 control-label menu-name" %>
         <div class="col-sm-12">
           <div class="form-row">
-          <%= form.number_field "details[][quantity]",value: detail.quantity, class: "#{detail.id}-quantity form-control col-sm-6" %>
-            <div class="<%=detail.id%>-decrease quantity-btn btn btn-secondary col-sm-1">ー</div>
-            <div class="<%=detail.id%>-increase quantity-btn btn btn-secondary col-sm-1">＋</div>
+            <%= form.number_field "details[#{i}][quantity]", value: detail.quantity, class: "#{detail.id}-quantity form-control col-sm-6" %>
+            <div class="<%= detail.id %>-decrease quantity-btn btn btn-secondary col-sm-1">ー</div>
+            <div class="<%= detail.id %>-increase quantity-btn btn btn-secondary col-sm-1">＋</div>
           </div>
         </div>
       </div>
@@ -24,7 +23,7 @@
           jQuery(document).ready(function () {
               $(".<%=detail.id%>-decrease").click(function () {
                   var value = Number($(".<%=detail.id%>-quantity").val());
-                  if(value > 0) {
+                  if (value > 0) {
                       value -= 1;
                       $(".<%=detail.id%>-quantity").val(value);
                   }
@@ -38,6 +37,42 @@
       </script>
     <% end %>
 
+    <% @menus.each_with_index do |menu, i| %>
+      <% if menu.sale_out %>
+        <p class="col-sm-6 control-label menu-name"><%= menu.name %>(売り切れ) </p>
+      <% else %>
+        <%= form.hidden_field "details[new][#{i}][menu_id]", value: menu.id %>
+        <%= form.hidden_field "details[new][#{i}][price]", value: menu.price %>
+        <div class="form-group">
+          <%= form.label menu.name, class: "col-sm-6 control-label menu-name" %>
+          <div class="col-sm-12">
+            <div class="form-row">
+              <%= form.number_field "details[new][#{i}][quantity]", value: 0, class: "new-#{menu.id}-quantity form-control col-sm-6" %>
+              <div class="new-<%= menu.id %>-decrease quantity-btn btn btn-secondary col-sm-1">ー</div>
+              <div class="new-<%= menu.id %>-increase quantity-btn btn btn-secondary col-sm-1">＋</div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" charset="utf - 8">
+            jQuery(document).ready(function () {
+                $(".new-<%=menu.id%>-decrease").click(function () {
+                    var value = Number($(".new-<%=menu.id%>-quantity").val());
+                    if (value > 0) {
+                        value -= 1;
+                        $(".new-<%=menu.id%>-quantity").val(value);
+                    }
+                });
+                $(".new-<%=menu.id%>-increase").click(function () {
+                    var value = Number($(".new-<%=menu.id%>-quantity").val());
+                    value += 1;
+                    $(".new-<%=menu.id%>-quantity").val(value);
+                });
+            });
+        </script>
+      <% end %>
+    <% end %>
+
+
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <%= form.submit "更新", class: "btn btn-primary col-sm-4" %>
@@ -46,7 +81,6 @@
         </button>
       </div>
     </div>
-
 
     <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog" role="document">

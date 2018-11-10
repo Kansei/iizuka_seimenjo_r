@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       get 'recive'
     end
   end
+
+  post '/orders/:id', to: 'orders#update'
+
   resources :order_details, only: [:index]
 
   get '*path', to: 'application#render_404'
