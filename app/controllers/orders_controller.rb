@@ -48,17 +48,41 @@ class OrdersController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
+      # 整理券番号
+
       last = Order.last
-      id = last.nil? ? 0 : last.id
-      number = id % 30 + 1
+
+      if last.nil?
+        last_number = 0
+      elsif last.status == 'done'
+        last_number = last.number - 1
+      else
+        last_number = last.number
+      end
+      number = last_number % 70 + 1
 
       @order = Order.new(total_price: params[:total_price], status: 'doing', number: number)
       @order.save!
 
+      menus = Menu.all.pluck(:id, :visible)
+      menus_hash = menus.map do |menu|
+        Hash[*[menu[0], menu[1]]]
+      end
+
+      flag = true
       details = params[:order_details]
       details.each do |detail|
-        @order.order_details.create!(menu_id: detail[:menu_id], quantity: detail[:quantity])
+        menu_id = detail[:menu_id].to_i
+        quantity = detail[:quantity]
+        @order.order_details.create!(menu_id: menu_id, quantity: quantity)
+
+        menus_hash.each do |menu_hash|
+          next if menu_hash[menu_id].nil?
+          flag = false if menu_hash[menu_id]
+        end
       end
+
+      @order.update(status: 'done') if flag
     end
 
     flash.now[:success] = "注文を受け付けました。"
