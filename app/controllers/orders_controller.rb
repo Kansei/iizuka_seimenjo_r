@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   def index
     if params[:done]
       @orders = Order.where(status: 'done').order(updated_at: 'desc')
-                    .eager_load(order_details: [:menu])
+                    .eager_load(order_details: [:menu]).limit(50)
     else
       @orders = Order.where.not(status: 'done').eager_load(order_details: [:menu])
     end
